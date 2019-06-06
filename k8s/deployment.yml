@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personalweb-deployment
+  labels:
+    app: personalweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: personalweb
+  template:
+    metadata:
+      labels:
+        app: personalweb
+    spec:
+      containers:
+      - name: personalweb
+        image: robertsuhim/personalweb:latest
+        ports:
+        - containerPort: 80

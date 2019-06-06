@@ -9,13 +9,23 @@ spec:
   selector:
     matchLabels:
       app: personalweb
+      service: http-server
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:
         app: personalweb
-    spec:
-      containers:
-      - name: personalweb
-        image: robertsuhim/personalweb:latest
-        ports:
-        - containerPort: 80
+        service: http-server
+  
+  spec:
+    containers:
+    - name: personalweb
+      image: robertsuhim/personalweb:latest
+      imagePullPolicy: IfNotPresent
+      ports:
+      - containerPort: 80

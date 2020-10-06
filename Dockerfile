@@ -1,2 +1,3 @@
-FROM httpd:2.4
-COPY ./html/ /usr/local/apache2/htdocs/
+FROM nginxinc/nginx-unprivileged 
+EXPOSE 8080
+COPY ./html/ /usr/share/nginx/html

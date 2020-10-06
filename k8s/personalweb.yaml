@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personalweb-deployment
+  labels:
+    app: personalweb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: personalweb
+  template:
+    metadata:
+      labels:
+        app: personalweb
+    spec:
+      containers:
+      - name: personalweb
+        image: robertsuhim/personalweb:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: personalweb-service
+spec:
+  selector:
+    app: personalweb
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: personalweb-ingress
+  labels:
+    app: avi-gslb
+spec:
+  rules:
+    - host: myweb-0.apps.corp.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            serviceName: personalweb-service
+            servicePort: 80

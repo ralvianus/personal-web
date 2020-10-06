@@ -21,7 +21,6 @@ spec:
       labels:
         app: personalweb
         service: http-server
-  
   spec:
     containers:
     - name: personalweb
